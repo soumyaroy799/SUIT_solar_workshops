@@ -4,14 +4,6 @@ Hands-on tutorials for SUIT data analysis using SunPy.
 
 ---
 
-## Launch in Colab
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
-https://colab.research.google.com/github/soumyaroy799/SUIT_solar_workshops/blob/main/workshops/2026_variable_sun/notebooks/01_intro.ipynb
-)
-
----
-
 ## Local Installation
 
 Clone the repository:
