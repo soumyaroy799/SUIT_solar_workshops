@@ -30,14 +30,25 @@ def configure_backend():
 
         output.enable_custom_widget_manager()
 
-        ip.run_line_magic(
-            "matplotlib",
-            "widget",
-        )
+        try:
 
-        print(
-            "Colab widget support enabled"
-        )
+            import ipympl
+
+            ip.run_line_magic(
+                "matplotlib",
+                "widget",
+            )
+
+            print(
+                "Colab widget support enabled"
+            )
+
+        except Exception:
+
+            print(
+                "\nPlease restart the Colab runtime "
+                "once and rerun the notebook."
+            )
 
     else:
 
