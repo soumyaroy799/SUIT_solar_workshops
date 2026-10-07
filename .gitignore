@@ -18,3 +18,7 @@ __pycache__/
 # Temporary files
 *.log
 *.tmp
+
+#Big files
+*.fits 
+*.zip
