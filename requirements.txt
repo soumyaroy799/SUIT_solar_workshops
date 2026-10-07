@@ -1,7 +1,8 @@
+matplotlib==3.9.2
 sunpy
 ipython
 jupyter
 jupyterlab
 sunkit-image==0.6.1
-ipympl
+ipympl==0.9.5
 ipython
