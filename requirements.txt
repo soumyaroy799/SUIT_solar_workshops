@@ -4,3 +4,4 @@ jupyter
 jupyterlab
 sunkit-image==0.6.1
 ipympl
+ipython
