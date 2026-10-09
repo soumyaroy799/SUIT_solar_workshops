@@ -15,6 +15,8 @@ DATA_URL = (
 	"&dl=1"
 )
 
+DATA_URL_2 = ("https://www.dropbox.com/scl/fi/i5s0f8kdj830yxx4he2n6/data_lcurve.zip?rlkey=pvp12d516gs116kkp6a4we431&st=0w998acz&dl=1")
+
 def configure_backend():
 
 	from IPython import get_ipython
@@ -118,6 +120,57 @@ def workshop_data_present(
 		for f in required_files
 	)
 
+def download_lcurve_data(
+	workshop_dir,
+	data_lcurve_dir,
+):
+
+	workshop_dir.mkdir(
+		parents=True,
+		exist_ok=True,
+	)
+
+	data_lcurve_dir.mkdir(
+		parents=True,
+		exist_ok=True,
+	)
+
+	zip_path = workshop_dir / "data_lcurve.zip"
+
+	print(
+		"Downloading light-curve data..."
+	)
+
+	urllib.request.urlretrieve(
+		DATA_URL_2,
+		zip_path,
+	)
+
+	print(
+		"Extracting light-curve data..."
+	)
+
+	with zipfile.ZipFile(
+		zip_path,
+		"r",
+	) as zf:
+
+		zf.extractall(data_lcurve_dir)
+
+	zip_path.unlink(
+		missing_ok=True
+	)
+
+	files = [
+		f for f in data_lcurve_dir.rglob("*")
+		if f.is_file()
+	]
+
+	print(
+		f"Light-curve data ready "
+		f"({len(files)} files found)."
+	)
+
 def download_workshop_data(
 	workshop_dir,
 	data_dir,
@@ -168,13 +221,13 @@ def download_workshop_data(
 		f"({len(fits_files)} FITS files found)."
 	)
 
+
 def setup_workshop(
 	root,
 	workshop_name="USO_Vikram_2026_Oct",
 ):
 
 	install_requirements(root)
-
 	configure_backend()
 
 	workshop_dir = (
@@ -183,23 +236,18 @@ def setup_workshop(
 		/ workshop_name
 	)
 
-	data_dir = (
-		workshop_dir
-		/ "data"
-	)
+	data_dir = workshop_dir / "data"
+	data_lcurve_dir = workshop_dir / "data_lcurve"
 
+	# Main workshop FITS data
 	required_files = [
 		data_dir / "SUTNB01.fits",
 		data_dir / "ROI_SUT_NB01.fits",
 	]
 
-	if workshop_data_present(
-		required_files
-	):
+	if workshop_data_present(required_files):
 
-		fits_files = sorted(
-			data_dir.glob("*.fits")
-		)
+		fits_files = sorted(data_dir.glob("*.fits"))
 
 		print(
 			f"Workshop data already available "
@@ -217,8 +265,30 @@ def setup_workshop(
 			data_dir,
 		)
 
+   # Light-curve data
+	lcurve_files = (
+		list(data_lcurve_dir.rglob("*.fits"))
+		if data_lcurve_dir.exists()
+		else []
+	)
+
+	if lcurve_files:
+
+		print(
+			f"Light-curve data already available "
+			f"({len(lcurve_files)} FITS files found)."
+		)
+
+	else:
+
+		print("Light-curve data missing.")
+
+		download_lcurve_data(
+			workshop_dir,
+			data_lcurve_dir,
+		)
+
 	return (
 		workshop_dir,
 		data_dir,
 	)
-
