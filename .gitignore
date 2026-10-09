@@ -1,5 +1,7 @@
 # macOS
 .DS_Store
+__MACOSX/
+._*
 
 # Python
 __pycache__/
