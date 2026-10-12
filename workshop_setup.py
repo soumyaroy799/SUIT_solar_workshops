@@ -291,4 +291,5 @@ def setup_workshop(
 	return (
 		workshop_dir,
 		data_dir,
+        data_lcurve_dir,
 	)
